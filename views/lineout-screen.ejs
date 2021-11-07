@@ -13,12 +13,12 @@
             <div class="image"></div>
             <div class="wrapper">
                 <div class="id"></div>
-                <div class="name"></div>
+                <div class="name"><%- items[0].username %></div>
             </div>
         </div>
-        <div class="time"></div>
-        <div class="comment"></div>
-        <div class="theme"></div>
+        <div class="time"><%- items[0].wakeup_date %></div>
+        <div class="comment"><%- items[0].comment %></div>
+        <div class="topic"><%- items[0].topic %></div>
         <div class="call"><a href="https://line.me/R/call/81/<%- items[0].phone_number %>">電話をかける。</a></div>
 
     </div>

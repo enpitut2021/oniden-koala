@@ -26,9 +26,8 @@ router.get("/lineout-screen", function (req, res) {
             console.log(err);
             res.send(err)
         } else {
-            client.query(`select * from call_orders, users where call_id = ${req.query.call_id};`, (err, result) => {
+            client.query(`select * from call_orders, users, topics where call_id = ${req.query.call_id};`, (err, result) => {
                 let num = result.rows;
-                console.log(num);
                 let data = {
                     items: num
                 };
@@ -37,6 +36,14 @@ router.get("/lineout-screen", function (req, res) {
             });
         }
     });
+});
+
+router.get("/post-screen", function (req, res) {
+    res.render("./post.ejs")
+});
+
+router.post("/post-screen", function (req, res) {
+    res.redirect("/");
 });
 
 module.exports = router;
