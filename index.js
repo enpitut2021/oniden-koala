@@ -3,6 +3,13 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 5000;
 const myLiffId = process.env.MY_LIFF_ID;
+//const bodyParser = require('body-parser');
+
+app.use(express.urlencoded({
+    extended: true
+}));
+
+app.use(express.json());
 
 app.use(express.static('public'));
 
