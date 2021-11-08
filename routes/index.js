@@ -7,7 +7,7 @@ router.get("/", function (req, res) {
         if (err) {
             res.send(err)
         } else {
-            client.query('select users.username, cast(wakeup_date as TIME), comment from call_orders, users where call_orders.user_id = users.user_id;', (err, result) => {
+            client.query('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id;', (err, result) => {
                 let num = result.rows;
                 let data = {
                     items: num
