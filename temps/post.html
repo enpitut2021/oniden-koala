@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<meta charset="UTF-8">
+<title>起床アプリ</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+</head>
+
+<body>
+<h1>起こして欲しい時間を選択してね</h1>
+<section>
+    <h2>新規投稿</h2>
+    <form action="" method="post">
+        名前: <input type="text" name="username" value=""><br>
+        起こしてくれる人に一言: <input type="text" name="comment" value=""><br>
+        起床時間; <input type="text" name="wakeup_date" id="flatpickr">
+        <script>
+            flatpickr("#flatpickr", {
+                locale:"ja",
+                minDate:"today",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                });
+
+        </script>
+    </form>
+</section>
+<section>
+    <A HREF="../temps/index.html"><h2>起こして欲しい希望者の一覧へ飛ぶ</h2>
+</body>
+
+</html>
