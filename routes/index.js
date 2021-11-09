@@ -31,7 +31,6 @@ router.get("/lineout-screen", function (req, res) {
                 let data = {
                     items: num
                 };
-                console.log(data)
                 // レンダリングを行う
                 res.render("./lineout-screen.ejs", data);
             });
@@ -58,7 +57,6 @@ router.post("/post-screen", function (req, res) {
                 client.query(`insert into users (username, phone_number) values ('${req.body.username}', '${req.body.phone_number}')returning user_id;`, (err, result) => {
                     const num = result.rows[0]['user_id'];
                     client.query(`insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values (${num}, '${req.body.wakeup_date}', '${req.body.comment}', TRUE, 1)`, (err, result) => {
-                        console.log(err)
                         res.send("Received POST Data!");
                     });
                 });
