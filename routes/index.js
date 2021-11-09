@@ -26,11 +26,12 @@ router.get("/lineout-screen", function (req, res) {
             console.log(err);
             res.send(err)
         } else {
-            client.query(`select * from call_orders, users, topics where call_id = ${req.query.call_id};`, (err, result) => {
+            client.query(`select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = ${req.query.call_id} and users.user_id = call_orders.user_id;`, (err, result) => {
                 let num = result.rows;
                 let data = {
                     items: num
                 };
+                console.log(data)
                 // レンダリングを行う
                 res.render("./lineout-screen.ejs", data);
             });
