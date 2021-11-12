@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+main {
+  padding: 0 15px;
+}
+
+section.list {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+a:hover {
+}
+
+.box1 {
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    /* font-weight: bold; */
+    border: solid 1px #888;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    --box-size: 64px;
+}
+.box1:hover {
+  background-color: #eee;
+  text-decoration: underline;
+}
+
+.box1 p {
+    margin: 0;
+    padding: 0;
+}
+.box1 div {
+    margin: 0;
+    padding: 0;
+}
+
+.box1 .message {
+  display: flex;
+  flex-direction: row;
+}
+.box1 .message img {
+  width: var(--box-size);
+  margin-right: 18px;
+  vertical-align: top;
+}
+.box1 .message .msgbox .user {
+  margin-bottom: 4px;
+}
+.box1 .message span {
+  margin-right: 8px;
+}
+.box1 .message .name {
+  font-size: 1.2em;
+}
+.box1 .message .uid {
+  color: #888;
+  font-size: 75%;
+}
+.box1 .comment {
+
+}
+.box1 .time {
+  line-height: var(--box-size);
+  font-weight: bold;
+  font-size: 1.8em;
+}
