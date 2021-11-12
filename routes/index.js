@@ -15,14 +15,24 @@ router.get("/", function (req, res) {
 
 
 router.get("/lineout-screen", function (req, res) {
-    db.pool.query(`select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = ${req.query.call_id} and users.user_id = call_orders.user_id;`, (err, result) => {
-        let num = result.rows;
-        let data = {
-            items: num
-        };
-        // レンダリングを行う
-        res.render("./lineout-screen.ejs", data);
+    db.pool.query(`select count(*) from topics;`, (err, result) => {
+        let count = result.rows[0]['count'];
+        let min = 1;
+        let max = count;
+        const randRange = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+        const rand = randRange(min, max);
+
+        db.pool.query(`select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = ${req.query.call_id} and users.user_id = call_orders.user_id and topics.topic_id = ${rand};`, (err, result) => {
+            let num = result.rows;
+            let data = {
+                items: num
+            };
+            // レンダリングを行う
+            res.render("./lineout-screen.ejs", data);
+        });
     });
+
 });
 
 router.get("/post-screen", function (req, res) {
