@@ -17,12 +17,13 @@ router.get("/", function (req, res) {
 router.get("/lineout-screen", function (req, res) {
     db.pool.query(`select count(*) from topics;`, (err, result) => {
         let count = result.rows[0]['count'];
-        console.log(count);
         let min = 1;
         let max = count;
-        let rand = Math.floor(Math.random() * (max + 1 - min)) + min;
+        const randRange = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
-        db.pool.query(`select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = ${req.query.call_id} and users.user_id = call_orders.user_id and topic.id = ${rand};`, (err, result) => {
+        const rand = randRange(min, max);
+
+        db.pool.query(`select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = ${req.query.call_id} and users.user_id = call_orders.user_id and topics.topic_id = ${rand};`, (err, result) => {
             let num = result.rows;
             let data = {
                 items: num
@@ -31,7 +32,7 @@ router.get("/lineout-screen", function (req, res) {
             res.render("./lineout-screen.ejs", data);
         });
     });
-    
+
 });
 
 router.get("/post-screen", function (req, res) {
