@@ -14,8 +14,16 @@ router.get("/", function (req, res) {
 });
 
 
-router.get("/lineout-screen", function (req, res) {
-    db.pool.query(`select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = ${req.query.call_id} and users.user_id = call_orders.user_id;`, (err, result) => {
+router.get("/lineout-screen", function (req, res) { 
+    db.pool.query(`select count(*) from topics;`, (err, result) => {
+        let num = result.rows;
+        console.log(num);
+        let data = {
+            items: num
+        };
+    });
+    r = Math.random()
+    db.pool.query(`select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = ${req.query.call_id} and users.user_id = call_orders.user_id and topic.id = 1;`, (err, result) => {
         let num = result.rows;
         let data = {
             items: num
