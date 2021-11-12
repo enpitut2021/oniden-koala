@@ -1,4 +1,12 @@
-# やりたいこと - すること
+# Quick Start
+- ## このREADMEファイルをレンダリングされた形でみたい
+
+    - （vscode上で）以下のリンクを `cmd` を押しながらクリック
+
+        https://github.com/enpitut2021/oniden-koala/tree/production#readme
+
+    - あるいは、`shift + cmd + p` でコマンドパレットを立ち上げ、 `open preview` と入力後、`Markdown: Open Preview` を選択
+
 - ## ローカルサーバー立ち上げたい
 
     - /.envファイルを追加
@@ -29,6 +37,14 @@
     - /views配下に.ejsファイルを追加
 
     - /routes/index.jsに対応する処理を追加（[処理の書き方](https://developer.mozilla.org/ja/docs/Learn/Server-side/Express_Nodejs/Introduction)）
+
+- ## 本番環境のDBに接続したい
+
+    - `heroku pg:psql` を実行
+
+- ## 公式のREADMEをみたい
+
+    - [こちら](./README.ja.md)を参照
 
 # 動作の仕組み
 /index.js が一番最初に参照される。

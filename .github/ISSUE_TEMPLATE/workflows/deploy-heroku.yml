@@ -1,0 +1,23 @@
+name: learn-github-actions
+on:
+  push:
+    branches:
+      - production
+  pull_request:
+    branches:
+      - production
+
+jobs:
+  push heroku:
+    runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          ses: actions/checkout@v2
+        - name: git setting
+          run: |
+            git config --local user.email "kentaro.jay.takahashi@gmail.com"
+            git config --local user.name "KentaroJay"
+        - name: git tests
+          run: |
+            git --version
+            git status
