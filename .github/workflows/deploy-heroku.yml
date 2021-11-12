@@ -14,7 +14,11 @@ jobs:
       run: |
         git config --local user.email "kentaro.jay.takahashi@gmail.com"
         git config --local user.name "KentaroJay"
+        git remote add heroku https://git.heroku.com/oniden-koala.git
     - name: git tests
       run: |
         git --version
-        git status
+        git remote -v
+    - name: Deploy to Heroku
+      run: |
+        git push heroku production:master
