@@ -1,37 +1,38 @@
 var router = require("express").Router();
 const db = require('../db/db');
+const query = require('../db/query');
 
+
+const promise = (querytext, param) => new Promise((resolve, reject) => {
+    query(querytext, param).then(result => {
+        resolve(result);
+    })
+})
 
 router.get("/", function (req, res) {
-    db.pool.query('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id;', (err, result) => {
-        let num = result.rows;
+    query('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id;').then(result => {
         let data = {
-            items: num
+            items: result
         };
-        // レンダリングを行う
         res.render("./index.ejs", data);
-    });
+    })
 });
 
 
 router.get("/lineout-screen", function (req, res) {
-    db.pool.query(`select count(*) from topics;`, (err, result) => {
-        let count = result.rows[0]['count'];
-        let min = 1;
-        let max = count;
+    const exec = async () => {
+        const res1 = await promise('select count(*) from topics;',)
+        const min = 1;
+        const max = res1[0]['count'];
         const randRange = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-
         const rand = randRange(min, max);
-
-        db.pool.query(`select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = ${req.query.call_id} and users.user_id = call_orders.user_id and topics.topic_id = ${rand};`, (err, result) => {
-            let num = result.rows;
-            let data = {
-                items: num
-            };
-            // レンダリングを行う
-            res.render("./lineout-screen.ejs", data);
-        });
-    });
+        const res2 = await promise('select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
+        const data = {
+            items: res2
+        }
+        res.render("./lineout-screen.ejs", data)
+    }
+    exec();
 
 });
 
@@ -40,18 +41,17 @@ router.get("/post-screen", function (req, res) {
 });
 
 router.post("/post-screen", function (req, res) {
-    console.log(req.body);
-    console.log(req.body.username);
-    console.log(req.body.phone_number);
     if (req.body.wakeup_date == '') {
         res.send("起きたい時間が設定されていません。設定してから再送信してください。")
-    } else if(req.body.consent == 'on') {
-        db.pool.query(`insert into users (username, phone_number) values ('${req.body.username}', '${req.body.phone_number}')returning user_id;`, (err, result) => {
-            const num = result.rows[0]['user_id'];
-            db.pool.query(`insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values (${num}, '${req.body.wakeup_date}', '${req.body.comment}', TRUE, 1)`, (err, result) => {
-                res.send("Received POST Data!");
-            });
-        });
+    } else if (req.body.consent == 'on') {
+
+        const exec = async () => {
+            const res1 = await promise("insert into users (username, phone_number) values ($1, $2)returning user_id;", [req.body.username, req.body.phone_number]);
+            const user_id = res1[0]['user_id'];
+            promise("insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values ($1, $2, $3, TRUE, 1)", [user_id, req.body.wakeup_date, req.body.comment]);
+            res.send("Received POST Data!");
+        }
+        exec();
     } else {
         res.send("起こしてくれる人を募集するには、送信ページの同意ボタンにチェックを入れてください。")
     }
