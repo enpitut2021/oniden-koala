@@ -13,7 +13,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@line/liff": "^2.17.0",
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
