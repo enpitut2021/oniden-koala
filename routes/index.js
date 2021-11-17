@@ -1,7 +1,7 @@
 var router = require("express").Router();
 const db = require('../db/db');
 const query = require('../db/query');
-
+const myLiffId = process.env.MY_LIFF_ID;
 
 const promise = (querytext, param) => new Promise((resolve, reject) => {
     query(querytext, param).then(result => {
@@ -55,6 +55,10 @@ router.post("/post-screen", function (req, res) {
     } else {
         res.send("起こしてくれる人を募集するには、送信ページの同意ボタンにチェックを入れてください。")
     }
+});
+
+app.get('/send-id', function (req, res) {
+    res.json({ id: myLiffId });
 });
 
 module.exports = router;
