@@ -15,14 +15,23 @@
             </div>
             <!-- <div class="wrapper"></div> -->
             <div class="id">aaa@gmail.com</div>
-            <div class="name">名前：<%- items[0].username %></div>
+            <div class="name">名前：
+                <%- items[0].username %>
+            </div>
         </div>
 
         <div class="list">
-            <div class="time">起こして欲しい時間：<br><%- items[0].wakeup_date %></div>
-            <div class="comment">ひとこと：<%- items[0].comment %></div>
-            <div class="topic">お題：今日の朝ごはん<%- items[0].topic %></div>
+            <div class="time">起こして欲しい時間：<br>
+                <%- items[0].wakeup_date %>
+            </div>
+            <div class="comment">ひとこと：
+                <%- items[0].comment %>
+            </div>
+            <div class="topic">お題：
+                <%- items[0].topic %>
+            </div>
             <div class="call"><a href="https://line.me/R/call/81/<%- items[0].phone_number %>">コールする</a></div>
+            <div class="delete"><a href="s">削除する</a></div>
         </div>
     </div>
 
