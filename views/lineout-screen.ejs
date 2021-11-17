@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>電話をかけるページ</title>
     <link rel="stylesheet" href="lineout-screen.css">
+    <script src="lineout-screen.js" charset="utf-8"></script>
 </head>
 
 <body>
@@ -31,7 +32,7 @@
                 <%- items[0].topic %>
             </div>
             <div class="call"><a href="https://line.me/R/call/81/<%- items[0].phone_number %>">コールする</a></div>
-            <div class="delete"><a href="s">削除する</a></div>
+            <div class="delete"><a href="javascript:deleteConfirm()">削除する</a></div>
         </div>
     </div>
 
