@@ -57,7 +57,7 @@ router.post("/post-screen", function (req, res) {
     }
 });
 
-app.get('/send-id', function (req, res) {
+router.get('/send-id', function (req, res) {
     res.json({ id: myLiffId });
 });
 
