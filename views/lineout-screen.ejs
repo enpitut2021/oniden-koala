@@ -5,24 +5,35 @@
     <meta charset="UTF-8">
     <title>電話をかけるページ</title>
     <link rel="stylesheet" href="lineout-screen.css">
+    <script src="lineout-screen.js" charset="utf-8"></script>
 </head>
 
 <body>
     <div class="container">
         <div class="profile">
             <div class="image">
-                <img src="https://knsoza1.com/wp-content/uploads/2020/07/70b3dd52350bf605f1bb4078ef79c9b9.png">
+                <img src="img/user_icon-default.png">
             </div>
-            <!-- <div class="wrapper"></div> -->
-            <div class="id">aaa@gmail.com</div>
-            <div class="name">名前：<%- items[0].username %></div>
+            <div class="user">
+              <div class="id">aaa@gmail.com</div>
+              <div class="name">名前：
+                  <%- items[0].username %>
+              </div>
+            </div>
         </div>
 
         <div class="list">
-            <div class="time">起こして欲しい時間：<br><%- items[0].wakeup_date %></div>
-            <div class="comment">ひとこと：<%- items[0].comment %></div>
-            <div class="topic">お題：<%- items[0].topic %></div>
+            <div class="time">起こして欲しい時間：<br>
+                <%- items[0].wakeup_date %>
+            </div>
+            <div class="comment">ひとこと：
+                <%- items[0].comment %>
+            </div>
+            <div class="topic">お題：
+                <%- items[0].topic %>
+            </div>
             <div class="call"><a href="https://line.me/R/call/81/<%- items[0].phone_number %>">コールする</a></div>
+            <div class="delete"><a href="javascript:deleteConfirm()">削除する</a></div>
         </div>
     </div>
 
