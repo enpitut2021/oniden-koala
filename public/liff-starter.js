@@ -1,18 +1,3 @@
-// document.addEventListener("load", function () {
-//     console.log("window loaded")
-//     liff.init({
-//         liffId: '1656528096-W6qpn7m3',
-//         // withLoginOnExternalBrowser: true,
-//     }).then(() => {
-//         window.alert("liff inited")
-//         if (!liff.isLoggedIn()) {
-//             liff.login();
-//         }
-//     }).catch((err) => {
-//         console.log(err);
-//     });
-// });
-
 // ローカル動作確認のときコメントアウト
 console.log("load!!")
 liff.init({
