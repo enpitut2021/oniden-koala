@@ -10,7 +10,7 @@ const promise = (querytext, param) => new Promise((resolve, reject) => {
 })
 
 router.get("/", function (req, res) {
-    query('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id;').then(result => {
+    query('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;').then(result => {
         let data = {
             items: result
         };
@@ -26,7 +26,7 @@ router.get("/lineout-screen", function (req, res) {
         const max = res1[0]['count'];
         const randRange = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
         const rand = randRange(min, max);
-        const res2 = await promise('select users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
+        const res2 = await promise('select call_orders.call_id, users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
         const data = {
             items: res2
         }
@@ -37,9 +37,12 @@ router.get("/lineout-screen", function (req, res) {
 
 // 鬼電希望の削除用
 router.get("/cancel-request", function (req, res) {
-  
 
-  res.send(req.query.call_id + "を削除しました（してない）");
+  const exec = async() => {
+    promise("update call_orders set deleted = true where call_id = $1", [req.query.call_id]);
+    res.send(req.query.call_id + "を削除しました<br><a href='/'>トップに戻る</a>");
+  }
+  exec();
 });
 
 
@@ -56,7 +59,7 @@ router.post("/post-screen", function (req, res) {
             const res1 = await promise("insert into users (username, phone_number) values ($1, $2)returning user_id;", [req.body.username, req.body.phone_number]);
             const user_id = res1[0]['user_id'];
             promise("insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values ($1, $2, $3, TRUE, 1)", [user_id, req.body.wakeup_date, req.body.comment]);
-            res.send("Received POST Data!");
+            res.send("Received POST Data!<br><a href='/'>トップに戻る</a>");
         }
         exec();
     } else {
