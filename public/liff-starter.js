@@ -13,6 +13,7 @@
 //     });
 // });
 
+// ローカル動作確認のときコメントアウト
 console.log("load!!")
 liff.init({
     liffId: '1656528096-W6qpn7m3',
