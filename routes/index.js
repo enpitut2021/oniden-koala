@@ -33,8 +33,15 @@ router.get("/lineout-screen", function (req, res) {
         res.render("./lineout-screen.ejs", data)
     }
     exec();
-
 });
+
+// 鬼電希望の削除用
+router.get("/cancel-request", function (req, res) {
+  
+
+  res.send(req.query.call_id + "を削除しました（してない）");
+});
+
 
 router.get("/post-screen", function (req, res) {
     res.render("./post.ejs")
