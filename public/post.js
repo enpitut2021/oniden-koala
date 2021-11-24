@@ -8,11 +8,14 @@ liff.init({ //いろいろ初期化
     if (!liff.isLoggedIn()) {
         liff.login(); //ログインしていなかったらログイン
     }
-    const line_profile = liff.getProfile()　 //プロフィール取得
+    const line_profile = liff.getProfile() //プロフィール取得
     const line_id = line_profile.userId //lineIDの取得
-    let element = document.getElementById('line_id');　
+    let element = document.getElementById('line_id');
     element.value = line_id;
-    console.log(document.getElementById('line_id').value)
+
+    // 取得できてるか確認
+    console.log(line_id);
+    console.log(document.getElementById('line_id').value);
 }).catch((err) => { //エラー処理
     console.log(err);
 });
