@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+        <script src="liff-starter.js"></script>
     </head>
     <body>
         <h1>起こして欲しい時間を選択してね</h1>
@@ -18,6 +19,7 @@
                 電話番号: <input required type="tel" minlength="11" maxlength="11" name="phone_number"><br>
                 <input type="checkbox" id="consent" name="consent" required>
                 <label for="consent">起こしてくれる人に電話番号を教えることを同意</label><br>
+                <input type="hidden" id="line_id" name="line_id">
                 <input type="submit" value="投稿する">
                 <script>
                     flatpickr("#flatpickr", {
@@ -26,7 +28,8 @@
                         enableTime: true,
                         dateFormat: "Y-m-d H:i",
                     });
-
+                    //html入力する処理かく
+                    let element = document.getElementById('line_id');
                 </script>
             </form>
         </section>
