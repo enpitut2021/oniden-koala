@@ -74,12 +74,12 @@ router.get("/reserve", function (req, res) {
     //→そのIDのところのサーバーにアクセスしてメッセージ送信
     //call_idの取得
     const exec = async () => {
-        const res1 = await promise("select from call_orders where call_id = $1;", [req.body.call_id]);//取れてきたレコード一つ入る
+        const res1 = await promise("select * from call_orders where call_id = $1;", [req.body.call_id]);//取れてきたレコード一つ入る
         const user_id = res1[0]['user_id'];
-        const res2 = await promise("select from users where user_id = $1;", [user_id]);
+        const res2 = await promise("select * from users where user_id = $1;", [user_id]);
         const line_id = res2[0]['line_id']
-        res.send("Received POST Data!<br><a href='/'>トップに戻る</a>");
 
+        // LINE Messaging API
         const bot = require('@line/bot-sdk');
 
         const client = new bot.Client({
@@ -94,7 +94,6 @@ router.get("/reserve", function (req, res) {
         client.pushMessage(line_id, message)
         .then(() => {
             // メッセージ送信成功
-            // console.log()
         })
         .catch((err) => {
             // error handling
@@ -103,6 +102,7 @@ router.get("/reserve", function (req, res) {
     }
     exec();
 
+    res.send("Received POST Data!<br><a href='/'>トップに戻る</a>");
 
 });
 
