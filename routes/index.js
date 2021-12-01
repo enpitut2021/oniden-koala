@@ -1,8 +1,12 @@
 var router = require("express").Router();
+const bot = require('@line/bot-sdk');
 const db = require('../db/db');
 const query = require('../db/query');
 const myLiffId = process.env.MY_LIFF_ID;
 const messagingApiToken = process.env.MESSAGING_API_TOKEN;
+const client = new bot.Client({
+    channelAccessToken: messagingApiToken
+});
 
 const promise = (querytext, param) => new Promise((resolve, reject) => {
     query(querytext, param).then(result => {
@@ -80,32 +84,15 @@ router.get("/reserve", function (req, res) {
         const res2 = await promise("select line_id from users where user_id = $1;", [user_id]);
         const line_id = res2[0]['line_id']
 
-        // LINE Messaging API
-        const bot = require('@line/bot-sdk');
-
-        const client = new bot.Client({
-            channelAccessToken: messagingApiToken
-        });
-
         const message = {
             type: 'text',
             text: 'Hello World!'
         };
 
-        client.pushMessage(line_id, message)
-        .then(() => {
-            // メッセージ送信成功
-            console.log("メッセージ送信成功")
-        })
-        .catch((err) => {
-            // error handling
-            console.error(err);
-        });
-
+        await client.pushMessage(line_id, message);
     }
     exec();
-
-    res.send("xxxを起こす予約をしました<br><a href='/'>トップに戻る</a>");
+    res.send("起こす予約をしました<br><a href='/'>トップに戻る</a>");
 
 });
 
