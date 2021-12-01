@@ -3,7 +3,7 @@ console.log("load!!")
 liff.init({ //いろいろ初期化
     liffId: '1656528096-W6qpn7m3',
     // withLoginOnExternalBrowser: true,
-}).then(() => { //初期化完了後にこれを実行
+}).then( async () => { //初期化完了後にこれを実行
     console.log("liff inited")
     if (!liff.isLoggedIn()) {
         console.log("not logged in")
