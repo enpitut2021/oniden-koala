@@ -79,10 +79,12 @@ router.get("/reserve", function (req, res) {
     //→そのIDのところのサーバーにアクセスしてメッセージ送信
     //call_idの取得
     const exec = async () => {
-        const res1 = await promise("select user_id from call_orders where call_id = $1;", [req.body.call_id]);//取れてきたレコード一つ入る
+        const res1 = await promise("select user_id from call_orders where call_id = $1;", [req.query.call_id]);//取れてきたレコード一つ入る
         const user_id = res1[0]['user_id'];
         const res2 = await promise("select line_id from users where user_id = $1;", [user_id]);
         const line_id = res2[0]['line_id']
+        // console.log(res1)
+        // console.log(res2)
 
         const message = {
             type: 'text',
