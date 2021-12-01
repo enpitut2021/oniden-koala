@@ -8,7 +8,7 @@ liff.init({ //いろいろ初期化
     if (!liff.isLoggedIn()) {
         liff.login(); //ログインしていなかったらログイン
     }
-    const line_profile = liff.getProfile() //プロフィール取得
+    const line_profile = await liff.getProfile() //プロフィール取得
     const line_id = line_profile.userId //lineIDの取得
     let element = document.getElementById('line_id');
     element.value = line_id;

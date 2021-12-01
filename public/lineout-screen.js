@@ -9,4 +9,6 @@ function deleteConfirm(cid) {
   } else {
     // キャンセルしたとき（あれば）
   }
+
+
 }
