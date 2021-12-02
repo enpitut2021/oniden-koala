@@ -40,47 +40,49 @@ a {
     border: solid 3px #000000;
 }
 
+.buttons {
+  position: flex;
+}
+
+.buttons > div {
+  position: relative;
+  display: inline-block;
+  padding: 0.25em 7px;
+  margin: 0 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+.buttons a {
+  color: #FFF;
+}
+.buttons > div:active {
+  box-shadow: none;
+  text-shadow: none;
+}
+
 .call {
-    position: relative;
-    display: inline-block;
-    padding: 0.25em 0.5em;
-    text-decoration: none;
     background: #03A9F4;
     border: solid 1px #0f9ada;
-    border-radius: 4px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 }
-
 .call a {
-    color: #FFF;
 }
-
 .call:active {
     border: solid 1px #03A9F4;
-    box-shadow: none;
-    text-shadow: none;
 }
 
 .delete {
-    position: relative;
-    display: inline-block;
-    padding: 0.25em 0.5em;
-    text-decoration: none;
-    color: #FFF;
     background: #d10b0b;
     border: solid 1px #d10b0b;
-    border-radius: 4px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 }
-
+.delete a {
+}
 .delete:active {
     border: solid 1px #d10b0b;
-    box-shadow: none;
-    text-shadow: none;
 }
 
-.delete a {
-    color: #FFF;
+.reserve {
+  background: #34a105;
+  border: #34a105;
 }
