@@ -6,6 +6,10 @@
     border: solid 3px #000000;
 }
 
+a {
+    text-decoration: none;
+}
+
 .profile {
     padding: 0.5em 1em;
     margin: 0em auto;
