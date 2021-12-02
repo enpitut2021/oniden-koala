@@ -32,9 +32,11 @@
             <div class="topic">お題：
                 <%- items[0].topic %>
             </div>
-            <div class="call"><a href="https://line.me/R/call/81/<%- items[0].phone_number %>">コールする</a></div>
-            <div class="delete"><a href="javascript:deleteConfirm(<%- items[0].call_id %>)">削除する</a></div>
-            <div class="reserve"><a href="/reserve?call_id=<%- items[0].call_id %>">起こす予約</a></div>
+            <div class="buttons">
+              <div class="reserve"><a href="/reserve?call_id=<%- items[0].call_id %>">起こす予約</a></div>
+              <div class="call"><a href="https://line.me/R/call/81/<%- items[0].phone_number %>">コールする</a></div>
+              <div class="delete"><a href="javascript:deleteConfirm(<%- items[0].call_id %>)">削除する</a></div>
+            </div>
         </div>
     </div>
 

@@ -83,12 +83,10 @@ router.get("/reserve", function (req, res) {
         const user_id = res1[0]['user_id'];
         const res2 = await promise("select line_id from users where user_id = $1;", [user_id]);
         const line_id = res2[0]['line_id']
-        // console.log(res1)
-        // console.log(res2)
 
         const message = {
             type: 'text',
-            text: 'Hello World!'
+            text: 'あなたの鬼電希望に答えてくれる予約者が現れました！'
         };
 
         await client.pushMessage(line_id, message);
