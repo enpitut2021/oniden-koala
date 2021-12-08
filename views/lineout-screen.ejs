@@ -6,6 +6,7 @@
     <title>電話をかけるページ</title>
     <link rel="stylesheet" href="lineout-screen.css">
     <script src="lineout-screen.js" charset="utf-8"></script>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 
 <body>
@@ -15,10 +16,10 @@
                 <img src="img/user_icon-default.png">
             </div>
             <div class="user">
-              <div class="id">aaa@gmail.com</div>
-              <div class="name">名前：
-                  <%- items[0].username %>
-              </div>
+                <div class="id">aaa@gmail.com</div>
+                <div class="name">名前：
+                    <%- items[0].username %>
+                </div>
             </div>
         </div>
 
@@ -33,9 +34,9 @@
                 <%- items[0].topic %>
             </div>
             <div class="buttons">
-              <div class="reserve"><a href="/reserve?call_id=<%- items[0].call_id %>">起こす予約</a></div>
-              <div class="call"><a href="https://line.me/R/call/81/<%- items[0].phone_number %>">コールする</a></div>
-              <div class="delete"><a href="javascript:deleteConfirm(<%- items[0].call_id %>)">削除する</a></div>
+                <div class="reserve"><a href="/reserve?call_id=<%- items[0].call_id %>">起こす予約</a></div>
+                <div class="call"><a href="javascript:call_button('<%- items[0].phone_number %>')">コールする</a></div>
+                <div class="delete"><a href="javascript:deleteConfirm(<%- items[0].call_id %>)">削除する</a></div>
             </div>
         </div>
     </div>
