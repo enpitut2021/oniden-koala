@@ -41,20 +41,23 @@ router.get("/lineout-screen", function(req, res) {
 });
 
 router.get("/lineout-exec", function(req, res) {
-    // 電話番号を変数で受け取る
-    const phone_number = req.query.phone_number;
-    // ポイント獲得の通知メッセージを送る
-    const message = {
-        type: 'text',
-        text: '３ポイント獲得しました！'
-    };
-    await client.pushMessage(line_id, message);
-    // リダイレクト
-    const url = "https://line.me/R/call/81/" + phone_number;
-    res.writeHead(302, {
-        'Location': url
-    });
-    res.end()
+    const exec = async() => {
+        // 電話番号を変数で受け取る
+        const phone_number = req.query.phone_number;
+        // ポイント獲得の通知メッセージを送る
+        const message = {
+            type: 'text',
+            text: '３ポイント獲得しました！'
+        };
+        await client.pushMessage(line_id, message);
+        // リダイレクト
+        const url = "https://line.me/R/call/81/" + phone_number;
+        res.writeHead(302, {
+            'Location': url
+        });
+        res.end()
+    }
+    exec()
 });
 
 // 鬼電希望の削除用
