@@ -39,8 +39,6 @@ async function call_button(phone) {
 
 
 
-
-
 // 削除のボタン操作とか
 
 function deleteConfirm(cid) {
