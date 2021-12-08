@@ -14,7 +14,7 @@ const promise = (querytext, param) => new Promise((resolve, reject) => {
     })
 })
 
-router.get("/", function (req, res) {
+router.get("/", function(req, res) {
     query('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;').then(result => {
         let data = {
             items: result
@@ -24,9 +24,9 @@ router.get("/", function (req, res) {
 });
 
 
-router.get("/lineout-screen", function (req, res) {
-    const exec = async () => {
-        const res1 = await promise('select count(*) from topics;',)
+router.get("/lineout-screen", function(req, res) {
+    const exec = async() => {
+        const res1 = await promise('select count(*) from topics;', )
         const min = 1;
         const max = res1[0]['count'];
         const randRange = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -40,29 +40,46 @@ router.get("/lineout-screen", function (req, res) {
     exec();
 });
 
-// 鬼電希望の削除用
-router.get("/cancel-request", function (req, res) {
+router.get("/lineout-exec", function(req, res) {
+    // 電話番号を変数で受け取る
+    const phone_number = req.query.phone_number;
+    // ポイント獲得の通知メッセージを送る
+    const message = {
+        type: 'text',
+        text: '３ポイント獲得しました！'
+    };
+    await client.pushMessage(line_id, message);
+    // リダイレクト
+    const url = "https://line.me/R/call/81/" + phone_number;
+    res.writeHead(302, {
+        'Location': url
+    });
+    res.end()
+});
 
-  const exec = async() => {
-    promise("update call_orders set deleted = true where call_id = $1", [req.query.call_id]);
-    res.send(req.query.call_id + "を削除しました<br><a href='/'>トップに戻る</a>");
-  }
-  exec();
+// 鬼電希望の削除用
+router.get("/cancel-request", function(req, res) {
+
+    const exec = async() => {
+        promise("update call_orders set deleted = true where call_id = $1", [req.query.call_id]);
+        res.send(req.query.call_id + "を削除しました<br><a href='/'>トップに戻る</a>");
+    }
+    exec();
 });
 
 
-router.get("/post-screen", function (req, res) {
+router.get("/post-screen", function(req, res) {
     res.render("./post.ejs")
 });
 
-router.post("/post-screen", function (req, res) {
+router.post("/post-screen", function(req, res) {
     if (req.body.wakeup_date == '') {
         res.send("起きたい時間が設定されていません。設定してから再送信してください。")
     } else if (req.body.line_id == '') {
         res.send("LINEのユーザーIDを取得できませんでした。")
     } else if (req.body.consent == 'on') {
 
-        const exec = async () => {
+        const exec = async() => {
             const res1 = await promise("insert into users (username, phone_number, line_id) values ($1, $2, $3)returning user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
             const user_id = res1[0]['user_id'];
             promise("insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values ($1, $2, $3, TRUE, 1)", [user_id, req.body.wakeup_date, req.body.comment]);
@@ -74,12 +91,12 @@ router.post("/post-screen", function (req, res) {
     }
 });
 
-router.get("/reserve", function (req, res) {
+router.get("/reserve", function(req, res) {
     //起こす予約ボタンが押されたときに、その投稿がもつ端末IDを取得
     //→そのIDのところのサーバーにアクセスしてメッセージ送信
     //call_idの取得
-    const exec = async () => {
-        const res1 = await promise("select user_id from call_orders where call_id = $1;", [req.query.call_id]);//取れてきたレコード一つ入る
+    const exec = async() => {
+        const res1 = await promise("select user_id from call_orders where call_id = $1;", [req.query.call_id]); //取れてきたレコード一つ入る
         const user_id = res1[0]['user_id'];
         const res2 = await promise("select line_id from users where user_id = $1;", [user_id]);
         const line_id = res2[0]['line_id']
@@ -96,7 +113,7 @@ router.get("/reserve", function (req, res) {
 
 });
 
-router.get('/send-id', function (req, res) {
+router.get('/send-id', function(req, res) {
     res.json({ id: myLiffId });
 });
 
