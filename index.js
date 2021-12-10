@@ -1,4 +1,3 @@
-const ngrok = require("ngrok");
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -22,6 +21,7 @@ if (process.env.NODE_ENV == "production") {
         console.log(`Example app listening at http://localhost:${port}`);
     });
 } else {
+    const ngrok = require("ngrok");
     ngrok.connect(port).then((url) => {
         app.listen(port, () => {
             console.log(`Example app listening at http://localhost:${port}`);
