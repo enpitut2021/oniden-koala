@@ -31,7 +31,7 @@ router.get("/lineout-screen", function(req, res) {
         const max = res1[0]['count'];
         const randRange = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
         const rand = randRange(min, max);
-        const res2 = await promise('select call_orders.call_id, users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
+        const res2 = await promise('select call_orders.call_id, users.username, users.phone_number, cast(call_orders.wakeup_date as TIME), call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
         const data = {
             items: res2
         }
@@ -84,7 +84,7 @@ router.post("/post-screen", function(req, res) {
     } else if (req.body.consent == 'on') {
 
         const exec = async() => {
-            const res1 = await promise("insert into users (username, phone_number, line_id) values ($1, $2, $3)returning user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
+            const res1 = await promise("INSERT INTO users (username, phone_number, line_id) VALUES ($1, $2, $3) ON CONFLICT ON CONSTRAINT line_key DO UPDATE SET username=$1, phone_number=$2returning user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
             const user_id = res1[0]['user_id'];
             promise("insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values ($1, $2, $3, TRUE, 1)", [user_id, req.body.wakeup_date, req.body.comment]);
             res.send("Received POST Data!<br><a href='/'>トップに戻る</a>");
