@@ -31,7 +31,7 @@ router.get("/lineout-screen", function(req, res) {
         const max = res1[0]['count'];
         const randRange = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
         const rand = randRange(min, max);
-        const res2 = await promise('select call_orders.call_id, users.username, users.phone_number, call_orders.wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
+        const res2 = await promise('select call_orders.call_id, users.username, users.phone_number, cast(call_orders.wakeup_date as TIME), call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
         const data = {
             items: res2
         }
