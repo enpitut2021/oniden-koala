@@ -84,7 +84,7 @@ router.post("/post-screen", function(req, res) {
     } else if (req.body.consent == 'on') {
 
         const exec = async() => {
-            const res1 = await promise("insert into users (username, phone_number, line_id) values ($1, $2, $3)returning user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
+            const res1 = await promise("INSERT INTO users (username, phone_number, line_id,) VALUES ($1, $2, $3) ON CONFLICT ON CONSTRAINT line_key DO UPDATE SET username=$1, phone_number=$2 returnig user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
             const user_id = res1[0]['user_id'];
             promise("insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values ($1, $2, $3, TRUE, 1)", [user_id, req.body.wakeup_date, req.body.comment]);
             res.send("Received POST Data!<br><a href='/'>トップに戻る</a>");
