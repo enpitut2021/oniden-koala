@@ -41,7 +41,8 @@ router.get("/lineout-screen", function(req, res) {
 });
 
 router.get("/lineout-exec", function(req, res) {
-    const exec = async() => {
+    const exec = async () => {
+        const line_id = req.query.line_id;
         // 電話番号を変数で受け取る
         const line_id = req.query.line_id;
         const phone_number = req.query.phone_number;
