@@ -120,6 +120,17 @@ router.get("/reserve", function(req, res) {
 
 });
 
+// ランキング一覧
+router.get('/ranking', function(req, res){
+    const exec = async() => {
+        const res1 = await promise("select * from users order by points desc limit 3;");
+        const data = {
+            items: res1
+        };
+        res.render("./ranking-lineout.ejs", data);
+    }
+});
+
 router.get('/send-id', function(req, res) {
     res.json({ id: myLiffId });
 });

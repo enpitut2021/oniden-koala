@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ランキング一覧</title>
+    <link rel="stylesheet" href="index.css">
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+
+<body>
+    <main>
+        <section class="list">
+            <% for (let item of items) { %>
+            <a href="lineout-screen?call_id=<%- item.call_id %>">
+                <div class="box1">
+                    <div class="message">
+                        <div class="imgbox">
+                            <img src="/img/user_icon-default.png" alt="user icon">
+                        </div>
+                        <div class="msgbox">
+                            <div class="user">
+                                <span class="name"><%- item.username %></span>
+                                <span class="uid">@ninjamagicston</span>
+                            </div>
+                            <div class="comment"><%- item.comment %></div>
+                        </div>
+                    </div>
+                    <div class="time"><%- item.wakeup_date %></div>
+                </div>
+            </a>
+            <% } %>
+        </section>
+    </main>
+    <div id="post-button"><a href="/post-screen">鬼電を希望する！</a></div>
+    <script src="liff-starter.js"></script>
+    <script src="top.js"></script>
+</body>
+
+</html>
