@@ -45,6 +45,9 @@ router.get("/lineout-exec", function(req, res) {
         const line_id = req.query.line_id;
         // 電話番号を変数で受け取る
         const phone_number = req.query.phone_number;
+        // DBにポイント加算記録
+        await promise('insert into users (line_id, points) values ($1, 3) on conflict on constraint line_key do update set points = users.points + 3;', [line_id]) 
+        // *鬼電希望出したことない人の名前はnull
         // ポイント獲得の通知メッセージを送る
         const message = {
             type: 'text',
