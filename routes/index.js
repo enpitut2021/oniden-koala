@@ -45,6 +45,9 @@ router.get("/lineout-exec", function(req, res) {
         const line_id = req.query.line_id;
         // 電話番号を変数で受け取る
         const phone_number = req.query.phone_number;
+        // DBにポイント加算記録
+        await promise("insert into users (username, line_id, points) values ('User', $1, 3) on conflict on constraint line_key do update set points = users.points + 3;", [line_id])
+        // *鬼電希望出したことない人の名前はnull
         // ポイント獲得の通知メッセージを送る
         const message = {
             type: 'text',
@@ -115,6 +118,18 @@ router.get("/reserve", function(req, res) {
     exec();
     res.send("起こす予約をしました<br><a href='/'>トップに戻る</a>");
 
+});
+
+// ランキング一覧
+router.get('/ranking', function(req, res){
+    const exec = async() => {
+        const res1 = await promise("select * from users order by points desc limit 3;");
+        const data = {
+            items: res1
+        };
+        res.render("./ranking-lineout.ejs", data);
+    }
+    exec();
 });
 
 router.get('/send-id', function(req, res) {
