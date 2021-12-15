@@ -1,6 +1,4 @@
-const ngrok = require("ngrok");
 const express = require('express');
-const path = require('path');
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -22,10 +20,27 @@ if (process.env.NODE_ENV == "production") {
         console.log(`Example app listening at http://localhost:${port}`);
     });
 } else {
+    const ngrok = require("ngrok");
     ngrok.connect(port).then((url) => {
-        app.listen(port, () => {
-            console.log(`Example app listening at http://localhost:${port}`);
-            console.log(`Example app listening at ${url}`);
-        });
+
+
+        const main = async () => {
+            app.listen(port, () => {
+                console.log(`Example app listening at http://localhost:${port}`);
+                console.log(`Example app listening at ${url}`);
+            });
+            const config = {
+                restApiId: "dy2e4aur09",
+                resourceId: "iyfvxzzk6i",
+                httpMethod: "ANY",
+                port: port,
+            }
+
+            const execSync = require('child_process').execSync
+            execSync(`aws apigateway put-integration --rest-api-id ${config.restApiId} --resource-id ${config.resourceId} --http-method ${config.httpMethod} --type HTTP_PROXY --integration-http-method ${config.httpMethod} --uri ${url}`)
+            execSync(`aws apigateway create-deployment --rest-api-id ${config.restApiId} --stage-name prod`)
+            console.log(`https://${config.restApiId}.execute-api.ap-northeast-1.amazonaws.com/prod`)
+        }
+        main();
     });
 }
