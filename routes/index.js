@@ -45,6 +45,9 @@ router.get("/lineout-exec", function(req, res) {
         const line_id = req.query.line_id;
         // 電話番号を変数で受け取る
         const phone_number = req.query.phone_number;
+        // DBにポイント加算記録
+        await promise("insert into users (username, line_id, points) values ('User', $1, 3) on conflict on constraint line_key do update set points = users.points + 3;", [line_id])
+        // *鬼電希望出したことない人の名前はnull
         // ポイント獲得の通知メッセージを送る
         const message = {
             type: 'text',
@@ -84,7 +87,7 @@ router.post("/post-screen", function(req, res) {
     } else if (req.body.consent == 'on') {
 
         const exec = async() => {
-            const res1 = await promise("INSERT INTO users (username, phone_number, line_id,) VALUES ($1, $2, $3) ON CONFLICT ON CONSTRAINT line_key DO UPDATE SET username=$1, phone_number=$2 returnig user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
+            const res1 = await promise("INSERT INTO users (username, phone_number, line_id) VALUES ($1, $2, $3) ON CONFLICT ON CONSTRAINT line_key DO UPDATE SET username=$1, phone_number=$2returning user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
             const user_id = res1[0]['user_id'];
             promise("insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values ($1, $2, $3, TRUE, 1)", [user_id, req.body.wakeup_date, req.body.comment]);
             res.send("Received POST Data!<br><a href='/'>トップに戻る</a>");
@@ -115,6 +118,18 @@ router.get("/reserve", function(req, res) {
     exec();
     res.send("起こす予約をしました<br><a href='/'>トップに戻る</a>");
 
+});
+
+// ランキング一覧
+router.get('/ranking', function(req, res){
+    const exec = async() => {
+        const res1 = await promise("select * from users order by points desc limit 3;");
+        const data = {
+            items: res1
+        };
+        res.render("./ranking-lineout.ejs", data);
+    }
+    exec();
 });
 
 router.get('/send-id', function(req, res) {
