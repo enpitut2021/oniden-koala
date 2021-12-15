@@ -16,9 +16,13 @@ app.set('view engine', 'ejs');
 app.use("/", require("./routes/index"))
 
 if (process.env.NODE_ENV == "production") {
-    app.listen(port, () => {
-        console.log(`Example app listening at http://localhost:${port}`);
-    });
+    const ngrok = require("ngrok");
+    ngrok.connect(port).then((url) => {
+        app.listen(port, () => {
+            console.log(`Example app listening at http://localhost:${port}`);
+            console.log(`Example app listening at ${url}`);
+        });
+    })
 } else {
     const ngrok = require("ngrok");
     ngrok.connect(port).then((url) => {
