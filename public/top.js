@@ -25,7 +25,7 @@ liff.init({ //いろいろ初期化
             console.log('api response is ...')
             console.log(this.response)
             let element = document.getElementById('tickets');
-            element.value = tickets
+            element.insertAdjacentText('afterbegin', tickets);
         }
 
         // リクエストをURLに送信
