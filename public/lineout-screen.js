@@ -1,7 +1,7 @@
 console.log("load!!")
 
 //コールボタンを押した時の動作
-async function call_button(phone) {
+async function call_button(cid) {
   liff.init({ //いろいろ初期化
     liffId: '1656528096-W6qpn7m3',
     // withLoginOnExternalBrowser: true,
@@ -19,7 +19,7 @@ async function call_button(phone) {
       console.log(line_id);
 
 
-      const call_url = '/lineout-exec?line_id=' + line_id + '&phone_number=' + phone;
+      const call_url = '/lineout-exec?line_id=' + line_id + '&call_id=' + cid;
       location.href = call_url;
     }
   }).catch((err) => { //エラー処理

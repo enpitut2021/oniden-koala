@@ -15,13 +15,25 @@ const promise = (querytext, param) => new Promise((resolve, reject) => {
 })
 
 router.get("/", function(req, res) {
-    query('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;').then(result => {
+    const exec = async() => {
+        const res1 = await promise('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;', )
         let data = {
-            items: result
-        };
-        res.render("./index.ejs", data);
-    })
+            items: res1,
+        }
+        res.render("./index.ejs", data)
+    }
+    exec();
 });
+
+router.get("/get-tickets", function(req, res) {
+    const exec = async() => {
+        const res1 = await promise("select tickets from users where line_id  = 'U9528d5812137bd5bd8007edd49274467'")
+        res.json({
+            tickets: res1
+        })
+    }
+    exec();
+})
 
 
 router.get("/lineout-screen", function(req, res) {
@@ -31,7 +43,7 @@ router.get("/lineout-screen", function(req, res) {
         const max = res1[0]['count'];
         const randRange = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
         const rand = randRange(min, max);
-        const res2 = await promise('select call_orders.call_id, users.username, users.phone_number, cast(call_orders.wakeup_date as TIME), call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
+        const res2 = await promise('select call_orders.call_id, users.username, cast(call_orders.wakeup_date as TIME), call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
         const data = {
             items: res2
         }
@@ -41,27 +53,32 @@ router.get("/lineout-screen", function(req, res) {
 });
 
 router.get("/lineout-exec", function(req, res) {
-    const exec = async () => {
-        const line_id = req.query.line_id;
+    const exec = async() => {
         // 電話番号を変数で受け取る
+        const line_id = req.query.line_id;
         const phone_number = req.query.phone_number;
         // DBにポイント加算記録
         await promise("insert into users (username, line_id, points) values ('User', $1, 3) on conflict on constraint line_key do update set points = users.points + 3;", [line_id])
-        // *鬼電希望出したことない人の名前はnull
-        // ポイント獲得の通知メッセージを送る
+            // *鬼電希望出したことない人の名前はnull
+            // ポイント獲得の通知メッセージを送る
         const message = {
             type: 'text',
-            text: '３ポイント獲得しました！'
+            text: 'チケットを3枚獲得しました！'
         };
-        await client.pushMessage(line_id, message);
+        await client.pushMessage(caller_id, message);
+
+        //チケットの消費
+        await promise("insert into users (username, line_id, tickets) values ('User', $1, 0) on conflict on constraint line_key do update set tickets = users.tickets - 1;", [callee[0]['line_id']])
+        // 消費できてる？？？（要検証） **********
+
         // リダイレクト
-        const url = "https://line.me/R/call/81/" + phone_number;
+        const url = "https://line.me/R/call/81/" + callee[0]['phone_number'];
         res.writeHead(302, {
             'Location': url
         });
         res.end()
     }
-    exec()
+    exec();
 });
 
 // 鬼電希望の削除用
@@ -90,7 +107,7 @@ router.post("/post-screen", function(req, res) {
             const res1 = await promise("INSERT INTO users (username, phone_number, line_id) VALUES ($1, $2, $3) ON CONFLICT ON CONSTRAINT line_key DO UPDATE SET username=$1, phone_number=$2returning user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
             const user_id = res1[0]['user_id'];
             promise("insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values ($1, $2, $3, TRUE, 1)", [user_id, req.body.wakeup_date, req.body.comment]);
-            res.send("Received POST Data!<br><a href='/'>トップに戻る</a>");
+            res.send("鬼電希望を送信しました！<br><a href='/'>トップに戻る</a>");
         }
         exec();
     } else {
@@ -121,7 +138,7 @@ router.get("/reserve", function(req, res) {
 });
 
 // ランキング一覧
-router.get('/ranking', function(req, res){
+router.get('/ranking', function(req, res) {
     const exec = async() => {
         const res1 = await promise("select * from users order by points desc limit 3;");
         const data = {
