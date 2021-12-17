@@ -53,14 +53,20 @@ router.get("/lineout-screen", function(req, res) {
 });
 
 router.get("/lineout-exec", function(req, res) {
-    const exec = async() => {
+    const exec = async () => {
+        const caller_id = req.query.line_id;
         // 電話番号を変数で受け取る
-        const line_id = req.query.line_id;
-        const phone_number = req.query.phone_number;
+        const call_id = req.query.call_id; 
+
+        // Call ID に紐つくデータ取得
+        // 電話相手の情報
+        const callee = await promise("select u.line_id, u.phone_number from call_orders as c, users as u where c.user_id = u.user_id and c.call_id = $1;", [call_id]);
+
         // DBにポイント加算記録
-        await promise("insert into users (username, line_id, points) values ('User', $1, 3) on conflict on constraint line_key do update set points = users.points + 3;", [line_id])
-            // *鬼電希望出したことない人の名前はnull
-            // ポイント獲得の通知メッセージを送る
+        await promise("insert into users (username, line_id, tickets) values ('User', $1, 3) on conflict on constraint line_key do update set tickets = users.tickets + 3;", [caller_id]);
+
+        // *鬼電希望出したことない人の名前はnull
+        // ポイント獲得の通知メッセージを送る
         const message = {
             type: 'text',
             text: 'チケットを3枚獲得しました！'
@@ -70,7 +76,7 @@ router.get("/lineout-exec", function(req, res) {
         //チケットの消費
         await promise("insert into users (username, line_id, tickets) values ('User', $1, 0) on conflict on constraint line_key do update set tickets = users.tickets - 1;", [callee[0]['line_id']])
         // 消費できてる？？？（要検証） **********
-
+        
         // リダイレクト
         const url = "https://line.me/R/call/81/" + callee[0]['phone_number'];
         res.writeHead(302, {
@@ -78,7 +84,7 @@ router.get("/lineout-exec", function(req, res) {
         });
         res.end()
     }
-    exec();
+    exec()
 });
 
 // 鬼電希望の削除用
