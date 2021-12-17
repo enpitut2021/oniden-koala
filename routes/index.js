@@ -15,13 +15,25 @@ const promise = (querytext, param) => new Promise((resolve, reject) => {
 })
 
 router.get("/", function(req, res) {
-    query('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;').then(result => {
+    const exec = async() => {
+        const res1 = await promise('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;', )
         let data = {
-            items: result
-        };
-        res.render("./index.ejs", data);
-    })
+            items: res1,
+        }
+        res.render("./index.ejs", data)
+    }
+    exec();
 });
+
+router.get("/get-tickets", function(req, res) {
+    const exec = async() => {
+        const res1 = await promise("select tickets from users where line_id  = 'U9528d5812137bd5bd8007edd49274467'")
+        res.json({
+            tickets: res1
+        })
+    }
+    exec();
+})
 
 
 router.get("/lineout-screen", function(req, res) {
@@ -41,14 +53,14 @@ router.get("/lineout-screen", function(req, res) {
 });
 
 router.get("/lineout-exec", function(req, res) {
-    const exec = async () => {
-        const line_id = req.query.line_id;
+    const exec = async() => {
         // 電話番号を変数で受け取る
+        const line_id = req.query.line_id;
         const phone_number = req.query.phone_number;
         // DBにポイント加算記録
         await promise("insert into users (username, line_id, points) values ('User', $1, 3) on conflict on constraint line_key do update set points = users.points + 3;", [line_id])
-        // *鬼電希望出したことない人の名前はnull
-        // ポイント獲得の通知メッセージを送る
+            // *鬼電希望出したことない人の名前はnull
+            // ポイント獲得の通知メッセージを送る
         const message = {
             type: 'text',
             text: '３ポイント獲得しました！'
@@ -61,7 +73,7 @@ router.get("/lineout-exec", function(req, res) {
         });
         res.end()
     }
-    exec()
+    exec();
 });
 
 // 鬼電希望の削除用
@@ -121,7 +133,7 @@ router.get("/reserve", function(req, res) {
 });
 
 // ランキング一覧
-router.get('/ranking', function(req, res){
+router.get('/ranking', function(req, res) {
     const exec = async() => {
         const res1 = await promise("select * from users order by points desc limit 3;");
         const data = {
