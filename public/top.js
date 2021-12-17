@@ -13,7 +13,7 @@ liff.init({ //いろいろ初期化
         const line_profile = await liff.getProfile() //プロフィール取得
         const line_id = line_profile.userId //lineIDの取得
         let element = document.getElementById('line_id');
-        element.value = line_id;
+        //element.value = line_id;
 
         // ticketsapi叩く
         let request = new XMLHttpRequest();
@@ -21,9 +21,11 @@ liff.init({ //いろいろ初期化
         request.responseType = 'json';
         request.onload = function() {
             // レスポンスが返ってきた時の処理
-            const tickets = this.response[0].tickets;
+            const tickets = this.response.tickets[0].tickets;
             console.log('api response is ...')
             console.log(this.response)
+            let element = document.getElementById('tickets');
+            element.value = tickets
         }
 
         // リクエストをURLに送信
