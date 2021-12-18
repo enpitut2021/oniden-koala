@@ -11,6 +11,7 @@
 <body>
     <main>
         <section class="list">
+            <div id="tickets"></div>
             <% for (let item of items) { %>
                 <a href="lineout-screen?call_id=<%- item.call_id %>">
                     <div class="box1">
@@ -37,9 +38,6 @@
         </section>
     </main>
     <div id="post-button"><a href="/post-screen">鬼電を希望する！</a></div>
-    <div id="tickets">
-
-    </div>
     <script src="liff-starter.js"></script>
     <script src="top.js"></script>
 </body>
