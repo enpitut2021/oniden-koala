@@ -19,21 +19,27 @@ app.set('view engine', 'ejs');
 
 app.use("/", require("./routes/index"))
 
-
-ngrok.connect(port).then((url) => {
+if (process.env.NODE_ENV == "pure") {
     app.listen(port, () => {
         console.log(`Example app listening at http://localhost:${port}`);
-        console.log(`Example app listening at ${url}`);
-        const shell = `curl -XPUT \
--H "Authorization: Bearer ${BEARER}" \
--H "Content-Type: application/json" \
--d '{
-"view": {
-    "type": "full",
-    "url": "${url}"
-}
-}' \
-https://api.line.me/liff/v2/apps/${MY_LIFF_ID}`
-        execSync(shell)
     });
-})
+} else {
+    ngrok.connect(port).then((url) => {
+        app.listen(port, () => {
+            console.log(`Example app listening at http://localhost:${port}`);
+            console.log(`Example app listening at ${url}`);
+            const shell = `curl -XPUT \
+    -H "Authorization: Bearer ${BEARER}" \
+    -H "Content-Type: application/json" \
+    -d '{
+    "view": {
+        "type": "full",
+        "url": "${url}"
+    }
+    }' \
+    https://api.line.me/liff/v2/apps/${MY_LIFF_ID}`
+            execSync(shell)
+        });
+    })
+}
+

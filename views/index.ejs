@@ -6,12 +6,13 @@
     <title>起こして欲しい人一覧</title>
     <link rel="stylesheet" href="index.css">
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
     <main>
         <section class="list">
-            <div id="tickets"></div>
+            <div id="tickets"><i class="fas fa-ticket-alt"></i></div>
             <% for (let item of items) { %>
                 <a href="lineout-screen?call_id=<%- item.call_id %>">
                     <div class="box1">
@@ -22,7 +23,6 @@
                             <div class="msgbox">
                                 <div class="user">
                                     <span class="name"><%- item.username %></span>
-                                    <span class="uid">@ninjamagicston</span>
                                 </div>
                                 <div class="comment">
                                     <%- item.comment %>

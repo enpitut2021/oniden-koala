@@ -17,11 +17,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // ticketsapi叩く
             fetch(`/get-tickets?line_id=${line_id}`)
                 .then(async response => response.json()).then(async json => {
+                    console.log(json)
+                    // アカウントがある時
                     console.log(json.tickets[0].tickets);
                     const tickets = json.tickets[0].tickets; // チケット数
 
                     const element = document.getElementById('tickets'); // 表示
-                    element.insertAdjacentText('afterbegin', tickets + 'チケットを所有しています。');
+                    element.insertAdjacentText('beforeend', tickets + 'チケットを所有しています。');
                 });
 
             // 取得できてるか確認
