@@ -29,9 +29,22 @@ router.get("/get-tickets", function(req, res) {
     const exec = async () => {
         const line_id = req.query.line_id;
         const res1 = await promise("select tickets from users where line_id  = $1", [line_id]);
-        res.json({
-            tickets: res1
-        })
+        console.log(res1.length)
+        console.log(res1)
+        if (res1.length) {
+            res.json({
+                tickets: res1
+            })
+        } else {
+            console.log('unknown user');
+            const res2 = await promise("insert into users (username, line_id, tickets) values ('User', $1, 3)", [req.query.line_id]);
+            console.log(res2);
+            const res3 = await promise("select tickets from users where line_id  = $1", [line_id]);
+            console.log(res3);
+            res.json({
+                tickets: res3
+            })
+        }
     }
     exec();
 })
