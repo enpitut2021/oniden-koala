@@ -75,7 +75,7 @@ router.get("/lineout-exec", function(req, res) {
         await client.pushMessage(caller_id, message);
 
         //チケットの消費
-        await promise("insert into users (username, line_id, tickets) values ('User', $1, 0) on conflict on constraint line_key do update set tickets = users.tickets - 1;", [callee[0]['line_id']])
+        // await promise("insert into users (username, line_id, tickets) values ('User', $1, 0) on conflict on constraint line_key do update set tickets = users.tickets - 1;", [callee[0]['line_id']])
         // 消費できてる？？？（要検証） **********
 
         // リダイレクト
@@ -98,12 +98,19 @@ router.get("/cancel-request", function(req, res) {
     exec();
 });
 
-
 router.get("/post-screen", function(req, res) {
+
+    // チケット足りない分岐: ユーザー情報まだわかんない
+    // const status = ;
+
+    // if (status[0]["tickets"]) {
+        
+    // }
     res.render("./post.ejs")
 });
 
 router.post("/post-screen", function(req, res) {
+
     if (req.body.wakeup_date == '') {
         res.send("起きたい時間が設定されていません。設定してから再送信してください。")
     } else if (req.body.line_id == '') {
@@ -111,10 +118,21 @@ router.post("/post-screen", function(req, res) {
     } else if (req.body.consent == 'on') {
 
         const exec = async() => {
-            const res1 = await promise("INSERT INTO users (username, phone_number, line_id) VALUES ($1, $2, $3) ON CONFLICT ON CONSTRAINT line_key DO UPDATE SET username=$1, phone_number=$2returning user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
+            const res1 = await promise("INSERT INTO users (username, phone_number, line_id) VALUES ($1, $2, $3) ON CONFLICT ON CONSTRAINT line_key DO UPDATE SET username=$1, phone_number=$2 returning user_id;", [req.body.username, req.body.phone_number, req.body.line_id]);
             const user_id = res1[0]['user_id'];
-            promise("insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values ($1, $2, $3, TRUE, 1)", [user_id, req.body.wakeup_date, req.body.comment]);
-            res.send("鬼電希望を送信しました！<br><a href='/'>トップに戻る</a>");
+
+            const tickets_curr = await promise ("select tickets from users where user_id = $1", [user_id]);
+            // const tickets_curr_a = tickets_curr[0]["tickets"];
+            // console.log("tickets_curr: "+tickets_curr_a);
+            if (tickets_curr > 0) {
+                //チケットの消費
+                await promise("insert into users (username, line_id, tickets) values ('User', $1, 0) on conflict on constraint line_key do update set tickets = users.tickets - 1;", [req.body.line_id]);
+                //鬼電希望送信
+                promise("insert into call_orders (user_id, wakeup_date, comment, consent, topic_id) values ($1, $2, $3, TRUE, 1)", [user_id, req.body.wakeup_date, req.body.comment]);
+                res.send("鬼電希望を送信しました！<br><a href='/'>トップに戻る</a>");
+            } else {
+                res.send("チケットが足りません。<br>鬼電希望したい場合は、他の希望者を起こしてあげましょう。<br><a href='/'>トップに戻る</a>");
+            }
         }
         exec();
     } else {
