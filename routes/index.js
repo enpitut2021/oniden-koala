@@ -117,7 +117,7 @@ router.get("/post-screen", function(req, res) {
     // const status = ;
 
     // if (status[0]["tickets"]) {
-        
+
     // }
     res.render("./post.ejs")
 });
@@ -137,7 +137,8 @@ router.post("/post-screen", function(req, res) {
             const tickets_curr = await promise ("select tickets from users where user_id = $1", [user_id]);
             // const tickets_curr_a = tickets_curr[0]["tickets"];
             // console.log("tickets_curr: "+tickets_curr_a);
-            if (tickets_curr > 0) {
+            console.log(tickets_curr);
+            if (tickets_curr[0].tickets > 0) {
                 //チケットの消費
                 await promise("insert into users (username, line_id, tickets) values ('User', $1, 0) on conflict on constraint line_key do update set tickets = users.tickets - 1;", [req.body.line_id]);
                 //鬼電希望送信
