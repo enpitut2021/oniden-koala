@@ -16,7 +16,7 @@ const promise = (querytext, param) => new Promise((resolve, reject) => {
 
 router.get("/", function(req, res) {
     const exec = async() => {
-        const res1 = await promise('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;', )
+        const res1 = await promise("select users.username, TO_CHAR(wakeup_date, 'MM/DD HH24:MI') as wakeup_date, comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;", )
         let data = {
             items: res1,
         }
@@ -57,7 +57,7 @@ router.get("/lineout-screen", function(req, res) {
         const max = res1[0]['count'];
         const randRange = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
         const rand = randRange(min, max);
-        const res2 = await promise('select call_orders.call_id, users.username, cast(call_orders.wakeup_date as TIME), call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;', [req.query.call_id, rand])
+        const res2 = await promise("select call_orders.call_id, users.username, TO_CHAR(wakeup_date, 'YYYY/MM/DD HH24:MI') as wakeup_date, call_orders.comment, topics.topic from call_orders, users, topics where call_id = $1 and users.user_id = call_orders.user_id and topics.topic_id = $2;", [req.query.call_id, rand])
         const data = {
             items: res2
         }
