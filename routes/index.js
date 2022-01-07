@@ -16,7 +16,9 @@ const promise = (querytext, param) => new Promise((resolve, reject) => {
 
 router.get("/", function(req, res) {
     const exec = async() => {
-        const res1 = await promise("select users.username, TO_CHAR(wakeup_date, 'MM/DD HH24:MI') as wakeup_date, comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;", )
+        // select u.username, c.wakeup_date, c.comment, c.call_id from call_orders c join users u using (user_id) where c.deleted = false and c.wakeup_date > current_timestamp + interval '+9:00';
+        // const res1 = await promise('select users.username, cast(wakeup_date as TIME), comment, call_orders.call_id from call_orders, users where call_orders.user_id = users.user_id and call_orders.deleted = false;', )
+        const res1 = await promise("select u.username, TO_CHAR(c.wakeup_date, 'MM/DD HH24:MI') wakeup_date, c.comment, c.call_id from call_orders c join users u using (user_id) where c.deleted = false and c.wakeup_date > current_timestamp + interval '+9:00';", )
         let data = {
             items: res1,
         }
