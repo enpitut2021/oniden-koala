@@ -164,7 +164,13 @@ router.get("/reserve", function(req, res) {
         const res1 = await promise("select user_id from call_orders where call_id = $1;", [req.query.call_id]); //取れてきたレコード一つ入る
         const user_id = res1[0]['user_id'];
         const res2 = await promise("select line_id from users where user_id = $1;", [user_id]);
-        const line_id = res2[0]['line_id']
+        const line_id = res2[0]['line_id'];
+
+        // line_id to user_id
+        const res3 = await promise("select user_id from users where line_id = $1;", [req.query.line_id]);
+        const caller_id = res3[0]['user_id'];
+        // reservations テーブルにレコード追加
+        await promise("insert into reservations (call_id, caller_id) values ($1, $2);", [req.query.call_id, caller_id]);
 
         const message = {
             type: 'text',
