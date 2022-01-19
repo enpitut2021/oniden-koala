@@ -1,91 +1,43 @@
 @charset "UTF-8";
 
-body{
-  font-size: 50px;
+body {
+    font-size: 50px !important;
 }
 
-.container {
-    padding: 10px;
-    text-align: center;
-    margin: 0 auto;
+.navbar-brand {
+    font-size: 50px !important;
 }
 
-a {
-    text-decoration: none;
+.card {
+    border: none !important;
 }
 
-.profile {
-    padding: 0.5em 1em;
-    margin: 0em auto;
+.card-title {
+    font-size: 80px !important;
+}
+
+.profile-image {
+    width: 200px;
+}
+
+.time {
+    font-size: 75px;
     font-weight: bold;
-    width: 500px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
 }
 
-.image img {
-    width: 164px;
-    height: 164px;
+.comment {
+    font-size: 60px;
+    font-weight: bold;
 }
 
-.list {
-    text-align: center;
-    margin: 0 auto;
-}
-
-.time,
-.comment,
 .topic {
-    padding: 0.5em 0.5em;
-    margin: 1em 0;
     font-weight: bold;
-    border: solid 3px #000000;
 }
 
-.buttons {
-  position: flex;
+.btn {
+    font-size: 80px !important;
 }
 
-.buttons > div {
-  position: relative;
-  display: inline-block;
-  padding: 0.25em 7px;
-  margin: 0 8px;
-  text-decoration: none;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-}
-.buttons a {
-  color: #FFF;
-}
-.buttons > div:active {
-  box-shadow: none;
-  text-shadow: none;
-}
-
-.call {
-    background: #03A9F4;
-    border: solid 1px #0f9ada;
-}
-.call a {
-}
-.call:active {
-    border: solid 1px #03A9F4;
-}
-
-.delete {
-    background: #d10b0b;
-    border: solid 1px #d10b0b;
-}
-.delete a {
-}
-.delete:active {
-    border: solid 1px #d10b0b;
-}
-
-.reserve {
-  background: #34a105;
-  border: #34a105;
+.btn.btn-danger {
+    font-size: 50px !important;
 }
