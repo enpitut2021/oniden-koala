@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>起床アプリ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="post.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
@@ -12,30 +15,65 @@
 </head>
 
 <body>
-    <h1>起こして欲しい時間を選択してね</h1>
-    <section>
-        <h2>新規投稿</h2>
-        <form action="" method="post">
-            名前: <input type="text" name="username" required><br> 起こしてくれる人に一言: <input type="text" name="comment"><br> 起床したい時間: <input required type="text" name="wakeup_date" id="flatpickr"><br> 電話番号: <input required type="tel" minlength="11" maxlength="11"
-                name="phone_number"><br>
-            <input type="checkbox" id="consent" name="consent" required>
-            <label for="consent">起こしてくれる人に電話番号を教えることを同意</label><br>
-            <input type="hidden" id="line_id" name="line_id">
-            <input type="submit" value="投稿する">
-            <script>
-                flatpickr("#flatpickr", {
-                    locale: "ja",
-                    minDate: "today",
-                    enableTime: true,
-                    dateFormat: "Y-m-d H:i",
-                });
-                //html入力する処理かく
-            </script>
-        </form>
-    </section>
-    <section>
-        <h2><a href="/">起こして欲しい希望者の一覧へ飛ぶ</a></h2>
-    </section>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <p class="navbar-brand">鬼電投稿ページ</p>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            各種操作
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/">トップページに戻る</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <section>
+            <form action="" method="post" class="d-flex flex-column">
+                <div class="mb-3">
+                    <label for="username" class="form-label">お名前</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="comment" class="form-label">起こしてくれる人にひとこと</label>
+                    <input type="text" class="form-control" id="comment" name="comment">
+                </div>
+                <div class="mb-3">
+                    <label for="wakeup_date" class="form-label">起きたい時間</label>
+                    <input type="text" class="form-control" id="flatpickr" name="wakeup_date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone_number" class="form-label">あなたの電話番号</label>
+                    <input type="tel" minlength="11" maxlength="11" class="form-control" id="phone_number" name="phone_number" required>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="consent" name="consent" required>
+                    <label class="form-check-label" for="consent">起こしてくれる人に電話番号を提供することに同意</label>
+                </div>
+                <input type="hidden" id="line_id" name="line_id">
+                <button type="submit" class="btn btn-primary align-self-end">掲示板に投稿する</button>
+
+                <script>
+                    flatpickr("#flatpickr", {
+                        locale: "ja",
+                        minDate: "today",
+                        enableTime: true,
+                        dateFormat: "Y-m-d H:i",
+                    });
+                    //html入力する処理かく
+                </script>
+            </form>
+        </section>
+    </div>
     <script src="post.js"></script>
 </body>
 

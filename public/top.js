@@ -24,6 +24,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const element = document.getElementById('tickets'); // 表示
                     element.insertAdjacentText('beforeend', tickets + 'チケットを所有しています。');
+                    document.querySelectorAll('.toast')
+                        .forEach(function (toastNode) {
+                            var toast = new bootstrap.Toast(toastNode, {
+                                autohide: false
+                            })
+
+                            toast.show()
+                        })
                 });
 
             // 取得できてるか確認

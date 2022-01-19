@@ -1,102 +1,44 @@
 @charset "UTF-8";
 
-body{
-  font-size: 50px;
+body {
+    font-size: 50px !important;
 }
 
-main {
-  padding: 0 15px;
-}
-section.list {
-  max-width: 1080px;
-  margin: 0 auto;
-}
-a {
-    color: black;
-    text-decoration: none;
-}
-.box1 {
-    padding: 0.5em 1em;
-    margin: 2em 0;
-    /* font-weight: bold; */
-    border: solid 1px #888;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    --box-size: 64px;
-}
-.box1:hover {
-  background-color: #eee;
-  text-decoration: underline;
+.card {
+    border-radius: 2.3rem !important;
 }
 
-.box1 p {
-    margin: 0;
-    padding: 0;
+.card-title span {
+    font-weight: bold;
+    font-size: 70px;
 }
-.box1 div {
-    margin: 0;
-    padding: 0;
+
+.toast {
+    border-radius: 2.3rem !important;
 }
-.box1 .message {
-  display: flex;
-  flex-direction: row;
+
+#notification-section {
+    top: 0px;
+    z-index: 1;
 }
-.box1 .message img {
-  width: var(--box-size);
-  margin-right: 18px;
-  vertical-align: top;
+
+#list-section {
+    margin: 140px 0px 0px 0px;
 }
-.box1 .message .msgbox .user {
-  margin-bottom: 4px;
-}
-.box1 .message span {
-  margin-right: 8px;
-}
-.box1 .message .name {
-  font-size: 1.2em;
-}
-.box1 .message .uid {
-  color: #888;
-  font-size: 75%;
-}
-.box1 .time {
-  line-height: var(--box-size);
-  font-weight: bold;
-  font-size: 50px;
-}
+
 #post-button {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  display: inline-block;
-  padding: 0.25em 0.5em;
-  text-decoration: none;
-  background: #03A9F4;
-  border: solid 1px #0f9ada;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-}
-#post-button a{
-  color: #FFF;
-  font-size: 40px;
-}
-#post-button:active {
-  border: solid 1px #03A9F4;
-  box-shadow: none;
-  text-shadow: none;
+    bottom: 30px;
+    right: 30px;
 }
 
-#tickets{
-  font-size: 40px;
+.btn {
+    font-size: 50px !important;
 }
 
-#tickets i{
-  font-size: 50px;
+#tickets {
+    font-size: 50px !important;
 }
 
-div.time {
-  font-size: 30px;
+button {
+    font-size: 50px !important;
 }

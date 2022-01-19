@@ -1,41 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
     <title>電話をかけるページ</title>
     <link rel="stylesheet" href="lineout-screen.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="profile">
-            <div class="image">
-                <img src="img/user_icon-default.png">
-            </div>
-            <div class="user">
-                <div class="id">aaa@gmail.com</div>
-                <div class="name">名前：
-                    <%- items[0].username %>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <p class="navbar-brand">詳細ページ</p>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            各種操作
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="btn btn-danger" href="javascript:deleteConfirm(<%- items[0].call_id %>)">削除する</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
+    <div class="container-fluid my-3">
 
-        <div class="list">
-            <div class="time">起こして欲しい時間：<br>
-                <%- items[0].wakeup_date %>
+        <div class="card mb-3">
+            <div class="d-flex justify-content-center">
+                <div class="profile-image align-self-center">
+                    <img class="w-100" src="img/user_icon-default.png" alt="プロフィール画像">
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="card-body">
+                        <p class="card-title text-break">
+                            <%- items[0].username %>
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="comment">ひとこと：
-                <%- items[0].comment %>
+
+            <div class="text-center">
+                <div>起こして欲しい時間：</div>
+                <div class="time">
+                    <%- items[0].wakeup_date %>
+                </div>
+                <div>ひとこと：</div>
+                <div class="comment">
+                    <%- items[0].comment %>
+                </div>
+                <div>お題：</div>
+                <div class="topic">
+                    <%- items[0].topic %>
+                </div>
             </div>
-            <div class="topic">お題：
-                <%- items[0].topic %>
-            </div>
-            <div class="buttons">
-                <div class="reserve"><a id="reserve" href="/reserve?call_id=<%- items[0].call_id %>&caller_id=">起こす予約</a></div>
-                <div class="call"><a href="javascript:call_button('<%- items[0].call_id %>')">コールする</a></div>
-                <div class="delete"><a href="javascript:deleteConfirm(<%- items[0].call_id %>)">削除する</a></div>
+
+            <div class="d-flex justify-content-evenly">
+                <a class="btn btn-success" id="reserve" href="/reserve?call_id=<%- items[0].call_id %>&caller_id=">起こす予約</a>
+                <a class="btn btn-primary" href="javascript:call_button('<%- items[0].call_id %>')">コールする</a>
             </div>
         </div>
     </div>
