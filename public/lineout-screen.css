@@ -1,9 +1,13 @@
+@charset "UTF-8";
+
+body{
+  font-size: 50px;
+}
+
 .container {
     padding: 10px;
     text-align: center;
-    width: 600px;
     margin: 0 auto;
-    border: solid 3px #000000;
 }
 
 a {
@@ -21,13 +25,12 @@ a {
 }
 
 .image img {
-    width: 64px;
-    height: 64px;
+    width: 164px;
+    height: 164px;
 }
 
 .list {
     text-align: center;
-    width: 400px;
     margin: 0 auto;
 }
 
